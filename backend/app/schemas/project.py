@@ -5,12 +5,12 @@ from datetime import datetime
 class ProjectBase(BaseModel):
     name: str
     description: Optional[str] = None
-    is_public: bool = False
+    is_public: Optional[bool] = False
 
 class ProjectCreate(ProjectBase):
     pass
 
-class ProjectUpdate(ProjectBase):
+class ProjectUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     is_public: Optional[bool] = None
@@ -30,16 +30,14 @@ class PaperInProject(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class Project(ProjectBase):
+class ProjectSchema(ProjectBase):
     id: int
     user_id: int
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(
-        from_attributes=True,
-        arbitrary_types_allowed=True
-    )
+    class Config:
+        from_attributes = True
 
 class ProjectWithPapers(BaseModel):
     id: int

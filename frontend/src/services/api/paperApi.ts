@@ -56,7 +56,7 @@ export const paperApi = {
   
   searchPapers: (query: string) => api.get(`/api/papers/search?q=${query}`),
   
-  searchByDoi: (doi: string) => api.get(`/api/papers/doi/${doi}`),
+  searchByDoi: (doi: string) => api.get(`/api/papers/search?doi=${encodeURIComponent(doi)}`),
   
   uploadPdf: (paperId: number, formData: FormData) => api.post(`/api/papers/${paperId}/upload-pdf`, formData, {
     headers: {

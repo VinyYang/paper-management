@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body, File, UploadFile, Form
+from fastapi import APIRouter, Depends, HTTPException, status, Body, File, UploadFile, Form, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import datetime
@@ -6,6 +6,7 @@ import os
 import sqlalchemy.orm
 from sqlalchemy import text
 import logging
+import urllib.parse
 
 from ..dependencies import get_db, get_current_user
 from ..models import User, Paper, Tag, UserRole, paper_tag, UserActivity
@@ -211,6 +212,31 @@ async def get_papers(
     except Exception as e:
         logger.error(f"获取论文列表失败: {str(e)}")
         raise HTTPException(status_code=500, detail=f"获取论文列表失败: {str(e)}")
+
+@router.get("/search", response_model=PaperWithTags)
+async def search_paper_by_doi(
+    doi: str = Query(..., description="论文的DOI"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    根据DOI搜索论文
+    """
+    # URL解码DOI
+    decoded_doi = urllib.parse.unquote(doi)
+    
+    paper = db.query(Paper).filter(
+        Paper.doi == decoded_doi,
+        Paper.user_id == current_user.id
+    ).first()
+    
+    if not paper:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="未找到匹配的论文"
+        )
+    
+    return paper
 
 @router.get("/{paper_id}", response_model=PaperWithTags)
 async def get_paper(

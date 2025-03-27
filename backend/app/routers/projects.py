@@ -5,7 +5,7 @@ import logging
 
 from ..dependencies import get_db, get_current_user
 from ..models import User, Project
-from ..schemas.project import Project as ProjectSchema, ProjectWithPapers, ProjectCreate, ProjectUpdate
+from ..schemas.project import ProjectSchema, ProjectWithPapers, ProjectCreate, ProjectUpdate
 from ..services.project_service import ProjectService
 
 router = APIRouter(

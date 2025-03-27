@@ -5,7 +5,7 @@ from datetime import datetime
 import logging
 
 from ..models import Project, project_paper, Paper, User
-from ..schemas.project import ProjectCreate, ProjectUpdate
+from ..schemas.project import ProjectCreate, ProjectUpdate, ProjectSchema
 
 # 设置日志
 logger = logging.getLogger(__name__)

@@ -63,7 +63,7 @@ class ProjectService:
             # 更新项目
             update_data = project_data.model_dump(exclude_unset=True)
             update_data["updated_at"] = datetime.now()
-            return update_project(db, project=project, **update_data)
+            return update_project(db, project_id=project_id, project=project_data)
         except SQLAlchemyError as e:
             db.rollback()
             logger.error(f"更新项目 {project_id} 失败: {e}")
