@@ -1,5 +1,7 @@
 # 数据结构课程设计：学术文献管理系统
+
 ![首页Home Page](https://github.com/user-attachments/assets/5d43ce4c-bf23-43fe-8984-32b1114f6ed8)
+
 ## 系统简介
 
 这是一个基于 FastAPI 和 React 构建的学术文献管理系统，用于高效管理学术文献、笔记和知识图谱。系统支持文献导入、元数据提取、知识图谱构建、笔记管理等功能，为学术研究提供全方位支持。
@@ -32,6 +34,32 @@
 - **Sci-Hub集成**：支持通过DOI快速获取文献
 - **主题切换**：支持浅色/深色/跟随系统三种模式
 - **多语言支持**：支持中文和英文界面切换
+
+## 系统界面展示
+
+### 文献库
+![文献库](https://github.com/user-attachments/assets/e401aa0b-003d-435f-8880-d2cd2b868dee)
+
+### 知识图谱
+![知识图谱](https://github.com/user-attachments/assets/c180759e-7c16-4a2f-a21f-6ab464c74082)
+
+### 论文相似度分析
+![论文相似度分析](https://github.com/user-attachments/assets/28028325-ce14-487c-88ce-9b601f1ce374)
+
+### 论文推荐
+![论文推荐](https://github.com/user-attachments/assets/92f8a443-818e-42b7-a98c-6dd6ff1a6223)
+
+### 论文检索
+![论文检索](https://github.com/user-attachments/assets/c5e98a08-fdb9-48b1-b5a3-2a445ef06588)
+
+### 项目管理
+![项目管理](https://github.com/user-attachments/assets/e8b643d9-4285-48e2-bffb-bcbbc1326214)
+
+### 系统设置
+![系统设置](https://github.com/user-attachments/assets/3d883f29-942d-48c8-bbec-85492914d72d)
+
+### 模式与语言切换
+![模式与语言切换](https://github.com/user-attachments/assets/28af03c3-58eb-4385-92e5-31e7dafa57f7)
 
 ## 服务器要求与建议
 
@@ -123,6 +151,8 @@ WorkingDirectory=/var/www/vinyyang/backend
 ExecStart=/var/www/vinyyang/backend/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8003
 Restart=always
 RestartSec=5
+StandardOutput=append:/var/log/vinyyang.log
+StandardError=append:/var/log/vinyyang_error.log
 
 [Install]
 WantedBy=multi-user.target
@@ -288,6 +318,20 @@ swapon /swapfile
 NODE_OPTIONS="--max-old-space-size=1536" npm run build --legacy-peer-deps
 ```
 
+#### Python类型注解错误解决方案
+```bash
+# 如果遇到类型注解错误（如Optional[Table]），可使用以下命令修复
+# 例如修复project_service.py中的错误
+cd /var/www/vinyyang/backend/app/services/
+# 在文件顶部添加Any类型导入
+sed -i '1s/^/from typing import Any\n/' project_service.py
+# 修改错误的类型注解
+sed -i 's/-> Optional\[project_paper\]/-> Optional[Any]/' project_service.py
+
+# 重启后端服务
+systemctl restart vinyyang
+```
+
 ### 完全重启与服务自动化
 
 #### 一键重启脚本
@@ -353,21 +397,3 @@ MIT License
 **项目状态**: 活跃开发中  
 **最后更新**: 2025-03-27  
 **运行环境**: Python 3.10+, Node.js 16+
-
-## 其他系统图片展示
-### 文献库Paperbase
-![文献库Paperbase](https://github.com/user-attachments/assets/e401aa0b-003d-435f-8880-d2cd2b868dee)
-### 知识图谱Knowledge-Graph
-![知识图谱Knowledge-Graph](https://github.com/user-attachments/assets/c180759e-7c16-4a2f-a21f-6ab464c74082)
-### 论文相似度分析Paper-Similarity-Measurement
-![论文相似度分析Paper-Similarity-Measurement](https://github.com/user-attachments/assets/28028325-ce14-487c-88ce-9b601f1ce374)
-### 论文推荐Paper-Recommendation
-![论文推荐Paper-Recommendation](https://github.com/user-attachments/assets/92f8a443-818e-42b7-a98c-6dd6ff1a6223)
-### 论文检索Paper-Searching
-![论文检索Paper-Searching](https://github.com/user-attachments/assets/c5e98a08-fdb9-48b1-b5a3-2a445ef06588)
-### 项目Project
-![项目Project](https://github.com/user-attachments/assets/e8b643d9-4285-48e2-bffb-bcbbc1326214)
-### 设置
-![设置](https://github.com/user-attachments/assets/3d883f29-942d-48c8-bbec-85492914d72d)
-### 模式与语言切换Mode-Language-Change
-![模式与语言切换Mode-Language-Change](https://github.com/user-attachments/assets/28af03c3-58eb-4385-92e5-31e7dafa57f7)
